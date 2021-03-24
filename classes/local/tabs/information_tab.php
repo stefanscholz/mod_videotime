@@ -15,17 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Tab.
  *
  * @package     mod_videotime
- * @copyright   2018 bdecent gmbh <https://bdecent.de>
+ * @copyright   2021 bdecent gmbh <https://bdecent.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_videotime\local\tabs;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'mod_videotime';
-$plugin->release = '1.5';
-$plugin->version = 2021032400;
-$plugin->requires = 2015111610;
-$plugin->maturity = MATURITY_STABLE;
+require_once("$CFG->dirroot/mod/videotime/lib.php");
+
+/**
+ * Tab.
+ *
+ * @package mod_videotime
+ */
+class information_tab extends tab {
+
+    public function get_name(): string {
+        return 'information';
+    }
+
+    public function get_label(): string {
+        return get_string('tabinformation', 'videotime');
+    }
+
+    public function get_tab_content(): string {
+        return 'This is some information';
+    }
+}
