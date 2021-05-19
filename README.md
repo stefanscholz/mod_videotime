@@ -42,7 +42,7 @@ For more detailed info, visit <https://docs.moodle.org/35/en/Installing_plugins>
 
 ## License ##
 
-2018 bdecent gmbh <https://bdecent.de>
+2021 bdecent gmbh <https://bdecent.de>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
