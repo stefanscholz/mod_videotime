@@ -441,7 +441,7 @@ function xmldb_videotime_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2021032300, 'videotime');
     }
     
-    if ($oldversion < 2021032401) {
+    if ($oldversion < 2021051902) {
     
         // Define field autopause to be added to videotime.
         $table = new xmldb_table('videotime');
@@ -490,7 +490,7 @@ function xmldb_videotime_upgrade($oldversion) {
 
             
         // Videotime savepoint reached.
-        upgrade_mod_savepoint(true, 2021032401, 'videotime');
+        upgrade_mod_savepoint(true, 2021051902, 'videotime');
     }
     
 
