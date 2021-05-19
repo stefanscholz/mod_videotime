@@ -445,7 +445,7 @@ function xmldb_videotime_upgrade($oldversion) {
     
         // Define field autopause to be added to videotime.
         $table = new xmldb_table('videotime');
-        $field = new xmldb_field('autopause', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'enabletabs');
+        $field = new xmldb_field('autopause', XMLDB_TYPE_INTEGER, '0', null, null, null, '0', 'enabletabs');
         
         // Conditionally launch add field autopause.
         if (!$dbman->field_exists($table, $field)) {
@@ -454,7 +454,7 @@ function xmldb_videotime_upgrade($oldversion) {
             
         // Define field background to be added to videotime.
         $table = new xmldb_table('videotime');
-        $field = new xmldb_field('background', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'autopause');
+        $field = new xmldb_field('background', XMLDB_TYPE_INTEGER, '0', null, null, null, '0', 'autopause');
         
         // Conditionally launch add field background.
         if (!$dbman->field_exists($table, $field)) {
@@ -463,7 +463,7 @@ function xmldb_videotime_upgrade($oldversion) {
             
         // Define field controls to be added to videotime.
         $table = new xmldb_table('videotime');
-        $field = new xmldb_field('controls', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'background');
+        $field = new xmldb_field('controls', XMLDB_TYPE_INTEGER, '0', null, null, null, '0', 'background');
         
         // Conditionally launch add field controls.
         if (!$dbman->field_exists($table, $field)) {
@@ -472,7 +472,7 @@ function xmldb_videotime_upgrade($oldversion) {
             
         // Define field pip to be added to videotime.
         $table = new xmldb_table('videotime');
-        $field = new xmldb_field('pip', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'controls');
+        $field = new xmldb_field('pip', XMLDB_TYPE_INTEGER, '0', null, null, null, '0', 'controls');
         
         // Conditionally launch add field pip.
         if (!$dbman->field_exists($table, $field)) {
@@ -481,7 +481,7 @@ function xmldb_videotime_upgrade($oldversion) {
             
         // Define field dnt to be added to videotime.
         $table = new xmldb_table('videotime');
-        $field = new xmldb_field('dnt', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'pip');
+        $field = new xmldb_field('dnt', XMLDB_TYPE_INTEGER, '0', null, null, null, '0', 'pip');
         
         // Conditionally launch add field dnt.
         if (!$dbman->field_exists($table, $field)) {
