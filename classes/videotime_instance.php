@@ -94,6 +94,11 @@ class videotime_instance implements \renderable, \templatable {
         'speed',
         'title',
         'transparent',
+        'autopause',
+        'background',
+        'controls',
+        'pip',
+        'dnt',
         'width',
         'preventfastforwarding'
     ];
