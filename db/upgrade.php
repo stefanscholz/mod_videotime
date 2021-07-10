@@ -489,12 +489,21 @@ function xmldb_videotime_upgrade($oldversion) {
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
-
             
         // Videotime savepoint reached.
         upgrade_mod_savepoint(true, 2021051902, 'videotime');
     }
     
+    if ($oldversion < 2021051903) {
+
+        // Define field completion_hide_detail to be added to videotime.
+        $table = new xmldb_table('videotime');
+        $field = new xmldb_field('completion_hide_detail', XMLDB_TYPE_INTEGER, '1', null,
+            XMLDB_NOTNULL, null, '0', 'completion_on_percent_value');
+
+        // Conditionally launch add field completion_hide_detail.
+        upgrade_mod_savepoint(true, 2021051903, 'videotime');
+    }
 
     return true;
 }
