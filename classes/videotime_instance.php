@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Represents a single Video Time activity module. Adds more functionality when working with instances.
+ *
  * @package     mod_videotime
  * @copyright   2020 bdecent gmbh <https://bdecent.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -39,8 +41,13 @@ require_once("$CFG->dirroot/mod/videotime/lib.php");
  */
 class videotime_instance implements \renderable, \templatable {
 
+    /** const int */
     const NORMAL_MODE = 0;
+
+    /** const int */
     const LABEL_MODE = 1;
+
+    /** const int */
     const PREVIEW_MODE = 2;
 
     /**
@@ -65,7 +72,7 @@ class videotime_instance implements \renderable, \templatable {
      *
      * @var next_activity_button
      */
-    private $next_activity_button = null;
+    private $nextactivitybutton = null;
 
     /**
      * @var bool
@@ -117,6 +124,8 @@ class videotime_instance implements \renderable, \templatable {
     }
 
     /**
+     * Constructor
+     *
      * @param \stdClass $instancerecord
      */
     protected function __construct(\stdClass $instancerecord) {
@@ -131,8 +140,7 @@ class videotime_instance implements \renderable, \templatable {
      * @return mixed|null
      * @throws \dml_exception
      */
-    public function __get($name)
-    {
+    public function __get($name) {
         if (isset($this->record->$name)) {
             if ($this->is_field_forced($name)) {
                 return $this->get_forced_value($name);
@@ -147,11 +155,10 @@ class videotime_instance implements \renderable, \templatable {
     /**
      * This is for backwards compatibility. Some code may still treat the instance as a stdClass.
      *
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param mixed $value
      */
-    public function __set($name, $value)
-    {
+    public function __set($name, $value) {
         $this->record->$name = $value;
     }
 
@@ -161,8 +168,7 @@ class videotime_instance implements \renderable, \templatable {
      * @return \context
      * @throws \coding_exception
      */
-    public function get_context(): \context
-    {
+    public function get_context(): \context {
         return \context_module::instance($this->get_cm()->id);
     }
 
@@ -198,7 +204,9 @@ class videotime_instance implements \renderable, \templatable {
     }
 
     /**
-     * @param $fieldname
+     * Get forced value of field from config
+     *
+     * @param string $fieldname
      * @return mixed
      * @throws \dml_exception
      */
@@ -211,16 +219,16 @@ class videotime_instance implements \renderable, \templatable {
      *
      * @param bool $embed
      */
-    public function set_embed(bool $embed): void
-    {
+    public function set_embed(bool $embed): void {
         $this->embed = $embed;
     }
 
     /**
+     * Whether instance is embedded
+     *
      * @return bool
      */
-    public function is_embed(): bool
-    {
+    public function is_embed(): bool {
         return $this->embed;
     }
 
@@ -230,8 +238,7 @@ class videotime_instance implements \renderable, \templatable {
      * @return \stdClass
      * @throws \coding_exception
      */
-    public function get_cm()
-    {
+    public function get_cm() {
         if (is_null($this->cm)) {
             $this->cm = get_coursemodule_from_instance('videotime', $this->id);
         }
@@ -290,6 +297,7 @@ class videotime_instance implements \renderable, \templatable {
      *
      * @param string $fieldname
      * @param \MoodleQuickForm $mform
+     * @param array $group
      * @throws \coding_exception
      * @throws \dml_exception
      */
@@ -357,26 +365,24 @@ class videotime_instance implements \renderable, \templatable {
      * @return next_activity_button|null
      * @throws \coding_exception
      */
-    public function get_next_activity_button()
-    {
+    public function get_next_activity_button() {
         // Next activity button is a pro feature.
-        if (videotime_has_pro() && is_null($this->next_activity_button)) {
-            $this->next_activity_button = new next_activity_button(\cm_info::create($this->get_cm()));
+        if (videotime_has_pro() && is_null($this->nextactivitybutton)) {
+            $this->nextactivitybutton = new next_activity_button(\cm_info::create($this->get_cm()));
         }
 
-        return $this->next_activity_button;
+        return $this->nextactivitybutton;
     }
 
     /**
      * Get the current time the user has watched or paused at. Used for resuming playback.
      *
-     * @param $userid
+     * @param int $userid
      * @return float
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function get_resume_time($userid): float
-    {
+    public function get_resume_time($userid): float {
         // Resuming is a pro feature.
         if (!videotime_has_pro()) {
             return 0;
@@ -402,8 +408,7 @@ class videotime_instance implements \renderable, \templatable {
      * @param renderer_base $output Used to do a final render of any components that need to be rendered for export.
      * @return \stdClass|array
      */
-    public function export_for_template(renderer_base $output)
-    {
+    public function export_for_template(renderer_base $output) {
         global $PAGE;
         $cm = get_coursemodule_from_instance('videotime', $this->id);
 
@@ -415,9 +420,9 @@ class videotime_instance implements \renderable, \templatable {
             'uniqueid' => $this->get_uniqueid()
         ];
 
-        if (videotime_has_pro() && !$this->is_embed() && $next_activity_button = $this->get_next_activity_button()) {
+        if (videotime_has_pro() && !$this->is_embed() && $nextactivitybutton = $this->get_next_activity_button()) {
             $renderer = $PAGE->get_renderer('mod_videotime');
-            $context['next_activity_button_html'] = $renderer->render($next_activity_button);
+            $context['next_activity_button_html'] = $renderer->render($nextactivitybutton);
         }
 
         if ($this->enabletabs) {
@@ -429,6 +434,8 @@ class videotime_instance implements \renderable, \templatable {
     }
 
     /**
+     * Returns external description
+     *
      * @return external_description
      */
     public static function get_external_description(): external_description {
@@ -466,7 +473,7 @@ class videotime_instance implements \renderable, \templatable {
             'dnt' => new \external_value(PARAM_BOOL),
             'width' => new \external_value(PARAM_TEXT),
             'responsive' => new \external_value(PARAM_BOOL),
-            'label_mode' => new \external_value(PARAM_BOOL),
+            'label_mode' => new \external_value(PARAM_INT),
             'viewpercentgrade' => new \external_value(PARAM_BOOL),
             'next_activity_button' => new \external_value(PARAM_BOOL),
             'next_activity_id' => new \external_value(PARAM_INT),
